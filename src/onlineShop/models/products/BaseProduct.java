@@ -1,5 +1,7 @@
 package onlineShop.models.products;
 
+import static onlineShop.common.constants.ExceptionMessages.*;
+
 public abstract class BaseProduct implements Product{
 
     private int id;
@@ -9,14 +11,47 @@ public abstract class BaseProduct implements Product{
     private double overallPerformance;
 
     public BaseProduct(int id, String manufacturer, String model, double price, double overallPerformance) {
-        this.id = id;
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.price = price;
-        this.overallPerformance = overallPerformance;
+        this.setId(id);
+        this.setManufacturer(manufacturer);
+        this.setModel(model);
+        this.setPrice(price);
+        this.setOverallPerformance(overallPerformance);
     }
 
+    public void setId(int id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException(INVALID_PRODUCT_ID);
+        }
+        this.id = id;
+    }
 
+    public void setManufacturer(String manufacturer) {
+        if (manufacturer == null || manufacturer.trim().isEmpty()) {
+            throw new IllegalArgumentException(INVALID_MANUFACTURER);
+        }
+        this.manufacturer = manufacturer;
+    }
+
+    public void setModel(String model) {
+        if (model == null || model.trim().isEmpty()) {
+            throw new IllegalArgumentException(INVALID_MODEL);
+        }
+        this.model = model;
+    }
+
+    public void setPrice(double price) {
+        if (price <= 0) {
+            throw new IllegalArgumentException(INVALID_PRICE);
+        }
+        this.price = price;
+    }
+
+    public void setOverallPerformance(double overallPerformance) {
+        if (overallPerformance <= 0) {
+            throw new IllegalArgumentException(INVALID_OVERALL_PERFORMANCE);
+        }
+        this.overallPerformance = overallPerformance;
+    }
 
     @Override
     public int getId() {
@@ -45,12 +80,8 @@ public abstract class BaseProduct implements Product{
 
     @Override
     public String toString() {
-        return "BaseProduct{" +
-                "id=" + id +
-                ", manufacturer='" + manufacturer + '\'' +
-                ", model='" + model + '\'' +
-                ", price=" + price +
-                ", overallPerformance=" + overallPerformance +
-                '}';
+        return String.format("Overall Performance: %.2f. Price: %.2f - %.2f: %s %s (Id: %d)"
+        ,this.overallPerformance, this.price, getClass().getSimpleName()
+                ,this.manufacturer, this.model, this.id);
     }
 }
