@@ -8,30 +8,49 @@ public abstract class BaseProduct implements Product{
     private double price;
     private double overallPerformance;
 
+    public BaseProduct(int id, String manufacturer, String model, double price, double overallPerformance) {
+        this.id = id;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.price = price;
+        this.overallPerformance = overallPerformance;
+    }
+
 
 
     @Override
     public int getId() {
-        return 0;
+        return this.id;
     }
 
     @Override
     public String getManufacturer() {
-        return null;
+        return this.manufacturer;
     }
 
     @Override
     public String getModel() {
-        return null;
+        return this.model;
     }
 
     @Override
     public double getPrice() {
-        return 0;
+        return this.price;
     }
 
     @Override
     public double getOverallPerformance() {
-        return 0;
+        return this.overallPerformance;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseProduct{" +
+                "id=" + id +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", model='" + model + '\'' +
+                ", price=" + price +
+                ", overallPerformance=" + overallPerformance +
+                '}';
     }
 }
