@@ -3,48 +3,47 @@ package onlineShop.models.products.components;
 public abstract class BaseComponent implements Component{
 
     private int generation;
-    private int id;
-    private String manufacturer;
-    private String model;
-    private double price;
-    private double overallPerformance;
 
-    public BaseComponent(int generation, int id, String manufacturer, String model, double price, double overallPerformance) {
+    public BaseComponent(int generation, int id, String manufacturer,
+                         String model, double price, double overallPerformance) {
         this.generation = generation;
-        this.id = id;
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.price = price;
-        this.overallPerformance = overallPerformance;
+
     }
 
     @Override
     public int getId() {
-        return 0;
+        return this.getId();
     }
 
     @Override
     public String getManufacturer() {
-        return null;
+        return this.getManufacturer();
     }
 
     @Override
     public String getModel() {
-        return null;
+        return this.getModel();
     }
 
     @Override
     public double getPrice() {
-        return 0;
+        return this.getPrice();
     }
 
     @Override
     public double getOverallPerformance() {
-        return 0;
+        return this.getOverallPerformance();
     }
 
     @Override
     public int getGeneration() {
-        return 0;
+        return this.generation;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Overall Performance: %.2f. Price: %.2f - %s: %s {model} (Id: %d) Generation: %d",
+                this.getOverallPerformance(), this.getPrice(), getClass().getSimpleName(),
+                this.getManufacturer(), this.getModel(), this.getId(), this.generation);
     }
 }
