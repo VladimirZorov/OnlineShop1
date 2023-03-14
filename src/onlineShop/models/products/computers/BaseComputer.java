@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static onlineShop.common.constants.ExceptionMessages.*;
+
 public abstract class BaseComputer implements Computer{
 
     private List<Component> components;
@@ -34,12 +36,12 @@ public abstract class BaseComputer implements Computer{
 
     @Override
     public double getPrice() {
-        return this.getPrice();
+        return 0;
     }
 
     @Override
     public double getOverallPerformance() {
-        return this.getOverallPerformance();
+        return 0;
     }
 
     @Override
@@ -54,7 +56,11 @@ public abstract class BaseComputer implements Computer{
 
     @Override
     public void addComponent(Component component) {
-
+        if (components.contains(component)) {
+            throw new IllegalArgumentException(String.format(EXISTING_COMPONENT,
+                    component.getClass().getSimpleName(), getClass().getSimpleName()), );
+        }
+        components.add(component);
     }
 
     @Override
@@ -74,9 +80,18 @@ public abstract class BaseComputer implements Computer{
 
     @Override
     public String toString() {
-        return "BaseComputer{" +
-                "components=" + components +
-                ", peripherals=" + peripherals +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Overall Performance: %.2f. Price: %.2f - %s: %s %s (Id: %d)",getOverallPerformance(),
+                        getPrice(),getClass().getSimpleName(),getManufacturer(),getModel(),getId()))
+                .append(System.lineSeparator());
+        sb.append(String.format(" Components (%d):",components.size())).append(System.lineSeparator());
+        for (Component component : components) {
+            sb.append("  "+component.toString()).append(System.lineSeparator());
+        }
+        sb.append(" Peripherals ({peripherals count}); Average Overall Performance ({average overall performance peripherals}):").append(System.lineSeparator());
+        for (Peripheral peripheral : peripherals) {
+            sb.append("  "+peripheral.toString()).append(System.lineSeparator());
+        }
+        return sb.toString().trim();
     }
 }
