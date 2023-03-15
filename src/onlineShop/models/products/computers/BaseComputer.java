@@ -58,14 +58,26 @@ public abstract class BaseComputer implements Computer{
     public void addComponent(Component component) {
         if (components.contains(component)) {
             throw new IllegalArgumentException(String.format(EXISTING_COMPONENT,
-                    component.getClass().getSimpleName(), getClass().getSimpleName()), );
+                    component.getClass().getSimpleName(), component, component.getPrice()));
         }
         components.add(component);
     }
 
     @Override
     public Component removeComponent(String componentType) {
-        return null;
+        Component componentForRemove = null;
+        if (components.size() == 0) {
+            throw new IllegalArgumentException(String.format(NOT_EXISTING_COMPONENT,componentType));
+        }
+        for (Component component : components) {
+            if (component.getClass().getSimpleName().equals(componentType)) {
+                componentForRemove = component;
+            } else {
+                throw new IllegalArgumentException(String.format(NOT_EXISTING_COMPONENT));
+            }
+        }
+        components.remove(componentForRemove);
+        return componentForRemove;
     }
 
     @Override
