@@ -11,10 +11,19 @@ import static onlineShop.common.constants.ExceptionMessages.*;
 
 public abstract class BaseComputer implements Computer{
 
+    private int id;
+    private String manufacturer;
+    private String model;
+    private double price;
+    private double overallPerformance;
     private List<Component> components;
     private List<Peripheral> peripherals;
 
     public BaseComputer(int id, String manufacturer, String model, double price, double overallPerformance) {
+        this.id = id;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.price = price;
         this.components = new ArrayList<>();
         this.peripherals = new ArrayList<>();
     }
@@ -36,12 +45,24 @@ public abstract class BaseComputer implements Computer{
 
     @Override
     public double getPrice() {
+
         return 0;
     }
 
     @Override
     public double getOverallPerformance() {
-        return 0;
+        double averOvPerf = 0;
+        double totalOvPerf = 0;
+        if (components.size() == 0) {
+            totalOvPerf = getOverallPerformance();
+        } else {
+            for (Component component : components) {
+                averOvPerf += component.getOverallPerformance();
+            }
+            averOvPerf = getOverallPerformance() + averOvPerf;
+        }
+
+        return totalOvPerf;
     }
 
     @Override
@@ -58,7 +79,7 @@ public abstract class BaseComputer implements Computer{
     public void addComponent(Component component) {
         if (components.contains(component)) {
             throw new IllegalArgumentException(String.format(EXISTING_COMPONENT,
-                    component.getClass().getSimpleName(), component, component.getPrice()));
+                    component.getClass().getSimpleName(), this.model, this.id));
         }
         components.add(component);
     }
@@ -100,7 +121,7 @@ public abstract class BaseComputer implements Computer{
         for (Component component : components) {
             sb.append("  "+component.toString()).append(System.lineSeparator());
         }
-        sb.append(" Peripherals ({peripherals count}); Average Overall Performance ({average overall performance peripherals}):").append(System.lineSeparator());
+        sb.append(String.format(" Peripherals (%d); Average Overall Performance (%.2f):", peripherals.size(),getOverallPerformance())).append(System.lineSeparator());
         for (Peripheral peripheral : peripherals) {
             sb.append("  "+peripheral.toString()).append(System.lineSeparator());
         }
