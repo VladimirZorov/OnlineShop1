@@ -9,7 +9,7 @@ import java.util.List;
 
 import static onlineShop.common.constants.ExceptionMessages.*;
 
-public abstract class BaseComputer implements Computer{
+public abstract class BaseComputer implements Computer {
 
     private int id;
     private String manufacturer;
@@ -88,7 +88,7 @@ public abstract class BaseComputer implements Computer{
     public Component removeComponent(String componentType) {
         Component componentForRemove = null;
         if (components.size() == 0) {
-            throw new IllegalArgumentException(String.format(NOT_EXISTING_COMPONENT,componentType));
+            throw new IllegalArgumentException(String.format(NOT_EXISTING_COMPONENT, componentType));
         }
         for (Component component : components) {
             if (component.getClass().getSimpleName().equals(componentType)) {
@@ -103,7 +103,11 @@ public abstract class BaseComputer implements Computer{
 
     @Override
     public void addPeripheral(Peripheral peripheral) {
-
+        if (peripherals.contains(peripheral)) {
+            throw new IllegalArgumentException(String.format(EXISTING_PERIPHERAL, peripheral.getClass().getSimpleName(),
+                    model, id));
+        }
+        peripherals.add(peripheral);
     }
 
     @Override
@@ -114,16 +118,16 @@ public abstract class BaseComputer implements Computer{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Overall Performance: %.2f. Price: %.2f - %s: %s %s (Id: %d)",getOverallPerformance(),
-                        getPrice(),getClass().getSimpleName(),getManufacturer(),getModel(),getId()))
+        sb.append(String.format("Overall Performance: %.2f. Price: %.2f - %s: %s %s (Id: %d)", getOverallPerformance(),
+                        getPrice(), getClass().getSimpleName(), getManufacturer(), getModel(), getId()))
                 .append(System.lineSeparator());
-        sb.append(String.format(" Components (%d):",components.size())).append(System.lineSeparator());
+        sb.append(String.format(" Components (%d):", components.size())).append(System.lineSeparator());
         for (Component component : components) {
-            sb.append("  "+component.toString()).append(System.lineSeparator());
+            sb.append("  " + component.toString()).append(System.lineSeparator());
         }
-        sb.append(String.format(" Peripherals (%d); Average Overall Performance (%.2f):", peripherals.size(),getOverallPerformance())).append(System.lineSeparator());
+        sb.append(String.format(" Peripherals (%d); Average Overall Performance (%.2f):", peripherals.size(), getOverallPerformance())).append(System.lineSeparator());
         for (Peripheral peripheral : peripherals) {
-            sb.append("  "+peripheral.toString()).append(System.lineSeparator());
+            sb.append("  " + peripheral.toString()).append(System.lineSeparator());
         }
         return sb.toString().trim();
     }
