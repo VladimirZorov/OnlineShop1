@@ -116,7 +116,12 @@ public abstract class BaseComputer implements Computer {
         if (peripherals.size() == 0) {
             throw new IllegalArgumentException(String.format(NOT_EXISTING_PERIPHERAL, peripheralType, model, id));
         }
-        return null;
+        for (Peripheral peripheral : peripherals) {
+            if (peripheral.getClass().getSimpleName().equals(peripheralType)) {
+                peripheralForRemove=peripheral;
+            }
+        }
+        return peripheralForRemove;
     }
 
     @Override
