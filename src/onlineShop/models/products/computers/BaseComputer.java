@@ -112,6 +112,10 @@ public abstract class BaseComputer implements Computer {
 
     @Override
     public Peripheral removePeripheral(String peripheralType) {
+        Peripheral peripheralForRemove = null;
+        if (peripherals.size() == 0) {
+            throw new IllegalArgumentException(String.format(NOT_EXISTING_PERIPHERAL, peripheralType, model, id));
+        }
         return null;
     }
 
